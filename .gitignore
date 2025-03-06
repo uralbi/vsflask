@@ -1,0 +1,10 @@
+venv
+.DS_Store
+.env
+flask.cgi
+Makefile
+
+__pycache__/
+*.py[cod]
+info.tx
+.htaccess
