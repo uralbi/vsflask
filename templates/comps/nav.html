@@ -1,22 +1,31 @@
-
-
 <nav class="my-navbar navbar navbar-expand-md">
   <div class="container-fluid">
-    
-    <a class="navbar-brand" href="#">iPost</a>
+    <div class="row flex-grow-1 align-items-center w-100">
+      
+      <!-- Brand Logo -->
+      <div class="col-2">
+        <a class="navbar-brand" href="#">iPost</a>
+      </div>
 
-    <div class="d-flex flex-grow-1 w-sm-50 justify-content-center px-md-5">
-      <form class="d-flex w-100" role="search">
-        <input class="form-control me-2 mt-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Search</button>
-      </form>
+      <!-- Search Bar -->
+      <div class="col-8 d-flex justify-content-center">
+        <form class="d-flex w-100" role="search">
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+      </div>
+
+      <!-- Navbar Toggler -->
+      <div class="col-2 d-flex justify-content-end">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <i class="bi bi-list"></i>
+        </button>
+      </div>
+
     </div>
 
-    <button class="navbar-toggler mx-3 mt-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <i class="bi bi-list"></i>
-    </button>
-
-    <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+    <!-- Collapsible Menu -->
+    <div class="collapse navbar-collapse justify-content-end align-items-center" id="navbarSupportedContent">
       <ul class="navbar-nav mb-2 mb-lg-0">
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="#">Home</a>
