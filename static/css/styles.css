@@ -1,0 +1,59 @@
+:root { 
+    --main-bg-color: #e6eeef;
+    --main-shadow-color: #cad3d4;
+    --nav-bg: rgb(5, 48, 54);
+    --nav-text-color: rgb(136, 162, 184);
+}
+/* Navigation */
+body { 
+    padding-top: 20px; }
+body, .card {
+    background: var(--main-bg-color);
+    }
+.card {
+    box-shadow: 0 0 24px var(--main-shadow-color);
+    }
+body, a, p, li, ul {
+    color: rgb(6, 49, 87) !important;
+}
+.my-navbar {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    background: var(--nav-bg);
+    color: white;
+    z-index: 999;
+}
+.my-navbar a, .my-navbar p, .my-navbar li, .my-navbar ul {
+    color: var(--nav-text-color) !important;
+}
+
+.my-navbar .navbar-toggler {
+    border: solid 1px gray;
+}
+
+.my-navbar .navbar-toggler i{
+    color: rgb(207, 190, 190) !important;
+
+}
+
+.my-navbar li {
+    text-align: center;
+    color: white !important;
+}
+
+.my-navbar li:hover {
+    background: #0f464e;
+    border-radius: 6px;
+}
+
+.my-navbar .dropdown-item:hover {
+    background: #216069;
+}
+
+.dropdown-menu[data-bs-popper] {
+    background: var(--nav-bg);
+    top: -145px;
+    left: 0;
+    margin-top: var(--bs-dropdown-spacer);
+  }
