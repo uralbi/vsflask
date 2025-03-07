@@ -6,7 +6,8 @@
 }
 /* Navigation */
 body { 
-    padding-top: 20px; }
+    padding-top: 20px; 
+    padding-bottom: 120px;}
 body, .card {
     background: var(--main-bg-color);
     }
@@ -34,7 +35,6 @@ body, a, p, li, ul {
 
 .my-navbar .navbar-toggler i{
     color: rgb(207, 190, 190) !important;
-
 }
 
 .my-navbar li {
