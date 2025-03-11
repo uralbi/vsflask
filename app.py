@@ -5,6 +5,9 @@ from config import Config
 from dotenv import load_dotenv
 from utils.ds import Utils
 
+load_dotenv()
+
+HOST = os.getenv("HOST")
 app = Flask(__name__)
 app.config.from_object(Config)
 db=SQLAlchemy(app)
@@ -33,5 +36,4 @@ def login():
         return jsonify({"success": False, "message": "Incorrect query"}), 401
     
 if __name__ == "__main__":
-    # app.run(host="0.0.0.0", port=5000)
-    app.run(host="127.0.0.1", port=5000)
+    app.run(host=f"{HOST}", port=5000)
