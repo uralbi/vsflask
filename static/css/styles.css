@@ -17,6 +17,7 @@ body, .card {
 body, a, p, li, ul {
     color: rgb(6, 49, 87) !important;
 }
+
 .my-navbar {
     width: 100%;
     position: fixed;
@@ -51,9 +52,12 @@ body, a, p, li, ul {
     background: #216069;
 }
 
-.dropdown-menu[data-bs-popper] {
+.my-navbar .dropdown-menu[data-bs-popper] {
     background: var(--nav-bg);
     top: -145px;
     left: 0;
     margin-top: var(--bs-dropdown-spacer);
   }
+
+.logo-image {
+    border-radius: 50%; }
