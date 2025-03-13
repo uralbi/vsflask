@@ -3,7 +3,8 @@
 {% block title %} App {% endblock %}
 
 {% block content %}
-    <h1></h1>
-    <p class="my-text"></p>
-      {% include "auth/login.html" %}
+
+<img class="mb-1 logo-image" src="{{ url_for("static", filename="images/dragon.png")}}" alt="" width="72" height="57">
+<div class="card p-2 mt-2" id="result_query"></div>
+
 {% endblock %}

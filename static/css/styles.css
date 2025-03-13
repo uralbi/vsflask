@@ -15,7 +15,7 @@ body, .card {
     box-shadow: 0 0 24px var(--main-shadow-color);
     }
 body, a, p, li, ul {
-    color: rgb(6, 49, 87) !important;
+    color: rgb(51, 97, 137) !important
 }
 
 .my-navbar {
@@ -61,3 +61,30 @@ body, a, p, li, ul {
 
 .logo-image {
     border-radius: 50%; }
+
+#result_query li{
+    padding: 4px 0;
+    text-decoration: none;
+}
+#result_query{
+    display: flex;
+    align-items: center; /* Center vertically */
+    justify-content: center; /* Optional: Center horizontally */
+    min-height: 70vh;
+    font-size: 0.9em;
+}
+
+.info_link {
+    text-decoration: none;
+    border: solid 1px rgb(51, 97, 137);
+    padding: 2px 20px;
+    border-radius: 4px;
+}
+.info_link:hover{
+    background-color: #216069;
+    color: white !important;
+}
+
+ul {
+    list-style-type: "▶ ";
+}

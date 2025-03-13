@@ -1,6 +1,6 @@
 <main class="form-signin w-75 m-auto">
     <form id="pass_form">
-      <img class="mb-4 logo-image" src="{{ url_for("static", filename="images/dragon.png")}}" alt="" width="72" height="57">
+      
   
       <div class="form-floating my-4">
         <input type="text" class="form-control" id="floatingPassword" placeholder="Запрос">
@@ -8,47 +8,9 @@
       </div>
   
       <button class="btn btn-sm btn-primary w-100 py-2" type="submit">Enter</button>
-
-      <div class="card p-2 mt-3" id="result_query"></div>
-
       <p class="mt-5 mb-3 text-body-secondary">© 2025</p>
     </form>
+  
+  
 
   </main>
-
-  <script>
-    document.getElementById("pass_form").addEventListener("submit", async function(event) {
-        event.preventDefault();  // Prevent page reload
-    
-        let password = document.getElementById("floatingPassword").value;
-        
-        let response = await fetch("/login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ password: password })
-        });
-    
-        let result = await response.json();
-        console.log(result)
-        let p_elem = document.getElementById("result_query")
-        if (result.type === 1) {
-          p_elem.innerHTML=`<a href="${result.data}" class="p-2 border-1" target="_blank">INFO LINK : ${result.query}</a>`
-        } else if (result.type === 2) {
-          p_elem.innerHTML = "";
-          let ul = document.createElement("ul");
-          result.res_list.forEach(item => {
-              let li = document.createElement("li");
-              li.textContent = item;
-              ul.appendChild(li);
-          });
-      
-          // Append the list to `p_elem`
-          p_elem.appendChild(ul);
-        } else {
-          p_elem.innerHTML="Error ... " // Show error message
-        }
-    });
-    </script>
-    

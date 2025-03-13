@@ -16,10 +16,8 @@
 
 </head>
 <body>
-    {% include "comps/nav.html" %} 
-    <div class="container">
+        {% include "comps/nav.html" %}
         {% block content %}{% endblock %}
-    </div>
-
+<script src="{{ url_for('static', filename='js/query.js') }}" defer></script>
 </body>
 </html>
