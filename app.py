@@ -14,13 +14,17 @@ db=SQLAlchemy(app)
 
 myutils = Utils()
 
-CORRECT_PASSWORD = os.getenv("SECRET_PASSWORD", "123094;sjasdfiEJEdf")
 
 @app.route("/")
 def home():
-    return render_template("/main.html")
+    try:
+        with db.engine.connect() as connection:
+            result = "✅ Successfully connected to PostgreSQL database!"
+    except Exception as e:
+        result = f"❌ Database connection failed: {e}"
+    return render_template("main.html", result=result)
 
-@app.route("/login", methods=["POST"])
+@app.route("/query", methods=["POST"])
 def login():
     data = request.json
     query = data.get("password")
@@ -31,6 +35,10 @@ def login():
     elif "тнвэдкод:" in query.lower():
         qwords = query[9:].split(" ")
         res = myutils.find_hscodes(qwords)
+        return jsonify({"res_list": res, "query": 'query', "type": 2}), 200
+    elif "новости:" in query.lower():
+        qword = query[8:]
+        res = myutils.get_news(qword)
         return jsonify({"res_list": res, "query": 'query', "type": 2}), 200
     else:
         return jsonify({"success": False, "message": "Incorrect query"}), 401
