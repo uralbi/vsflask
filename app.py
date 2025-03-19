@@ -1,28 +1,24 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for, session
 import os
-from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.orm import Session
 from config import Config
 from dotenv import load_dotenv
 from utils.ds import Utils
+from domain.db.database import get_db  # Import the DB dependency
 
 load_dotenv()
 
 HOST = os.getenv("HOST")
 app = Flask(__name__)
 app.config.from_object(Config)
-db=SQLAlchemy(app)
+
 
 myutils = Utils()
 
 
 @app.route("/")
 def home():
-    try:
-        with db.engine.connect() as connection:
-            result = "✅ Successfully connected to PostgreSQL database!"
-    except Exception as e:
-        result = f"❌ Database connection failed: {e}"
-    return render_template("main.html", result=result)
+    return render_template("main.html")
 
 @app.route("/query", methods=["POST"])
 def login():
