@@ -5,6 +5,8 @@ from config import Config
 from dotenv import load_dotenv
 from utils.ds import Utils
 from domain.db.database import get_db  # Import the DB dependency
+import logging
+from logging.handlers import RotatingFileHandler
 
 load_dotenv()
 
@@ -16,8 +18,26 @@ app.config.from_object(Config)
 myutils = Utils()
 
 
+if not os.path.exists('logs'):
+    os.mkdir('logs')
+
+log_file = os.path.join('logs', 'flask_app.log')
+
+handler = RotatingFileHandler(log_file, maxBytes=100000, backupCount=3)
+handler.setLevel(logging.DEBUG)
+
+formatter = logging.Formatter(
+    '%(asctime)s [%(levelname)s] %(message)s'
+)
+handler.setFormatter(formatter)
+
+app.logger.addHandler(handler)
+app.logger.setLevel(logging.DEBUG)
+
+
 @app.route("/")
 def home():
+    app.logger.info("Flask main page.")
     return render_template("main.html")
 
 @app.route("/query", methods=["POST"])
@@ -40,4 +60,8 @@ def login():
         return jsonify({"success": False, "message": "Incorrect query"}), 401
     
 if __name__ == "__main__":
-    app.run(host=f"{HOST}", port=5000)
+    try:
+        app.run(host=f"{HOST}", port=5000)
+    except Exception as e:
+        app.logger.debug("Error in starting app:", e)
+    
