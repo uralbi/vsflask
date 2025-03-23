@@ -37,8 +37,10 @@ app.logger.setLevel(logging.DEBUG)
 
 @app.route("/")
 def home():
-    app.logger.info("Flask main page.")
-    return render_template("main.html")
+    try:
+        return render_template("main.html")
+    except Exception as e:
+        app.logger.info("Error main page:.", e)
 
 @app.route("/query", methods=["POST"])
 def login():
