@@ -34,10 +34,12 @@ handler.setFormatter(formatter)
 app.logger.addHandler(handler)
 app.logger.setLevel(logging.DEBUG)
 
+app.logger.info("loading app.py")
 
 @app.route("/")
 def home():
     try:
+        app.logger.info("Serving main page")
         return render_template("main.html")
     except Exception as e:
         app.logger.info("Error main page:.", e)
