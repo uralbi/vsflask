@@ -61,6 +61,7 @@ def login():
     
 if __name__ == "__main__":
     try:
+        app.debug = True
         app.run(host=f"{HOST}", port=5000)
     except Exception as e:
         app.logger.debug("Error in starting app:", e)
