@@ -40,7 +40,7 @@ app.logger.info("loading app.py")
 def home():
     try:
         app.logger.info("Serving main page")
-        return render_template("main.html")
+        return render_template("mainpage.html")
     except Exception as e:
         app.logger.info("Error main page:.", e)
 
