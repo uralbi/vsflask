@@ -5,6 +5,13 @@
 {% block content %}
 
 <img class="mb-1 logo-image" src="{{ url_for("static", filename="images/dragon.png")}}" alt="" width="72" height="57">
+
+{% if db_ok %}
+<span class="badge bg-success">DB connected</span>
+{% else %}
+<span class="badge bg-danger" title="{{ db_error }}">DB unavailable</span>
+{% endif %}
+
 <div class="card p-2 mt-2" id="result_query"></div>
 
 {% endblock %}

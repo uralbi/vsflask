@@ -1,10 +1,9 @@
-from flask import Flask, render_template, request, jsonify, redirect, url_for, session
+from flask import Flask, render_template, request, jsonify
 import os
-from sqlalchemy.orm import Session
 from config import Config
 from dotenv import load_dotenv
 from utils.ds import Utils
-from domain.db.database import get_db  # Import the DB dependency
+from domain.db.database import check_connection
 import logging
 from logging.handlers import RotatingFileHandler
 
@@ -40,9 +39,10 @@ app.logger.info("loading app.py")
 def home():
     try:
         app.logger.info("Serving main page")
-        return render_template("main.html")
+        db_ok, db_error = check_connection()
+        return render_template("main.html", db_ok=db_ok, db_error=db_error)
     except Exception as e:
-        app.logger.info("Error main page:.", e)
+        app.logger.error("Error main page: %s", e)
 
 @app.route("/query", methods=["POST"])
 def login():
