@@ -43,6 +43,7 @@ def home():
         return render_template("main.html", db_ok=db_ok, db_error=db_error)
     except Exception as e:
         app.logger.error("Error main page: %s", e)
+        return render_template("main.html", db_ok=False, db_error=str(e))
 
 @app.route("/query", methods=["POST"])
 def login():
