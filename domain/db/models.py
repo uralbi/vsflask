@@ -40,10 +40,7 @@ class Post(db.Model):
     modified_at = db.Column(TIMESTAMP(timezone=True), server_default=text('now()'), onupdate=datetime.utcnow)
     author_id = db.Column(db.Integer, ForeignKey("users.id"), nullable=False)
 
-    search_vector = db.Column(
-        TSVECTOR,
-        Computed("to_tsvector('russian', coalesce(title, '') || ' ' || coalesce(content, ''))", persisted=True)
-    )
+    search_vector = db.Column(TSVECTOR, nullable=True)
 
     author = relationship("User", back_populates="posts")
     images = relationship("PostImage", back_populates="post", lazy="dynamic", cascade="all, delete-orphan")
