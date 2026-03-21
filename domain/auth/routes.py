@@ -22,7 +22,7 @@ def send_verification_email(to_email, code):
     msg["To"] = to_email
 
     try:
-        with smtplib.SMTP(smtp_host, smtp_port) as server:
+        with smtplib.SMTP(smtp_host, smtp_port, timeout=5) as server:
             server.starttls()
             server.login(smtp_user, smtp_pass)
             server.sendmail(sender, [to_email], msg.as_string())
