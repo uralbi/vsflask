@@ -1,7 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from enum import Enum as PyEnum
-from sqlalchemy import Enum, Column, Integer, String, TIMESTAMP, Boolean, text, UniqueConstraint, Computed, ForeignKey, Text
+from sqlalchemy import Enum, Column, Integer, String, TIMESTAMP, Boolean, text, UniqueConstraint, ForeignKey
 from sqlalchemy.dialects.postgresql import TSVECTOR
 from sqlalchemy.orm import relationship
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -66,11 +66,8 @@ class News(db.Model):
     created_at = db.Column(TIMESTAMP(timezone=True), server_default=text('now()'))
     source = db.Column(db.String, nullable=True)
     author_id = db.Column(db.Integer, ForeignKey("users.id"), nullable=True)
-    year_month = db.Column(db.String, Computed("to_char(created_at, 'YYYY-MM')", persisted=True))
-    search_vector = db.Column(
-        TSVECTOR,
-        Computed("to_tsvector('russian', coalesce(title, '') || ' ' || coalesce(content, ''))", persisted=True)
-    )
+    year_month = db.Column(db.String, nullable=True)
+    search_vector = db.Column(TSVECTOR, nullable=True)
 
     author = relationship("User", backref="news")
 
