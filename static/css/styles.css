@@ -5,9 +5,10 @@
     --nav-text-color: rgb(136, 162, 184);
 }
 /* Navigation */
-body { 
-    padding-top: 20px; 
-    padding-bottom: 120px;}
+body {
+    padding-top: 56px;
+    padding-bottom: 40px;
+}
 body, .card {
     background: var(--main-bg-color);
     }
@@ -21,7 +22,7 @@ body, a, p, li, ul {
 .my-navbar {
     width: 100%;
     position: fixed;
-    bottom: 0;
+    top: 0;
     background: var(--nav-bg);
     color: white;
     z-index: 999;
@@ -89,7 +90,154 @@ ul {
     list-style-type: "▶ ";
 }
 
-/* Auth card */
+/* ── Page layout ─────────────────────────────── */
+.page-container {
+    display: flex;
+    gap: 24px;
+    max-width: 900px;
+    margin: 32px auto;
+    padding: 0 16px;
+    align-items: flex-start;
+}
+
+/* ── Sidebar ──────────────────────────────────── */
+.sidebar {
+    width: 260px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 24px;
+}
+.sidebar-profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.avatar {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: rgb(5,48,54);
+    color: #fff;
+    font-size: 1.3rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 8px;
+}
+.username {
+    font-weight: 600;
+    font-size: .95rem;
+    color: rgb(5,48,54) !important;
+    margin-bottom: 4px;
+}
+.signout-link {
+    font-size: .78rem;
+    color: #888 !important;
+    text-decoration: none;
+}
+.signout-link:hover { color: #c0392b !important; }
+
+.post-form-card {
+    padding: 20px;
+    border: none;
+    border-radius: 12px;
+}
+.section-label {
+    font-size: .7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: #888 !important;
+    margin-bottom: 14px;
+}
+.post-form-card .form-control {
+    background: rgba(255,255,255,0.6);
+    border: 1px solid rgba(51,97,137,0.18);
+    border-radius: 8px;
+    font-size: .88rem;
+    resize: vertical;
+}
+.post-form-card .form-control:focus {
+    box-shadow: 0 0 0 3px rgba(51,97,137,0.1);
+    border-color: rgba(51,97,137,0.35);
+    background: rgba(255,255,255,0.9);
+}
+.btn-publish {
+    background: rgb(5,48,54);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: .85rem;
+    padding: 8px 0;
+    transition: background .2s;
+}
+.btn-publish:hover { background: #0f6570; color: #fff; }
+
+/* ── Feed ─────────────────────────────────────── */
+.feed { flex: 1; min-width: 0; }
+
+.post-card {
+    border: none;
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 16px;
+    transition: box-shadow .2s;
+}
+.post-card:hover {
+    box-shadow: 0 4px 20px rgba(5,48,54,0.13);
+}
+.post-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+}
+.post-title {
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: rgb(5,48,54) !important;
+    line-height: 1.3;
+}
+.post-meta {
+    font-size: .75rem;
+    color: #999 !important;
+    margin-top: 3px;
+}
+.post-content {
+    font-size: .9rem;
+    color: rgb(60,90,110) !important;
+    line-height: 1.65;
+    white-space: pre-wrap;
+}
+.btn-delete {
+    background: none;
+    border: none;
+    color: #ccc;
+    font-size: .85rem;
+    cursor: pointer;
+    padding: 2px 6px;
+    border-radius: 4px;
+    transition: color .15s;
+    flex-shrink: 0;
+}
+.btn-delete:hover { color: #e74c3c; }
+
+.empty-feed {
+    text-align: center;
+    padding: 48px 0;
+    color: #aaa !important;
+    font-size: .9rem;
+}
+
+/* Responsive: stack on mobile */
+@media (max-width: 640px) {
+    .page-container { flex-direction: column; }
+    .sidebar { width: 100%; position: static; }
+}
+
+/* ── Auth card ────────────────────────────────── */
 .auth-card {
     max-width: 420px;
     margin: 0 auto;

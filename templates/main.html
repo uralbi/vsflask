@@ -3,67 +3,80 @@
 {% block title %} App {% endblock %}
 
 {% block content %}
-<div class="d-flex flex-column align-items-center mt-4">
+{% if current_user.is_authenticated %}
 
-  <img class="mb-3 logo-image" src="{{ url_for('static', filename='images/dragon.png')}}" alt="" width="56" height="44">
+<div class="page-container">
 
-  {% if current_user.is_authenticated %}
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-profile">
+      <div class="avatar">{{ current_user.username[0].upper() }}</div>
+      <div class="username">{{ current_user.username }}</div>
+      <a href="{{ url_for('auth.logout') }}" class="signout-link">Sign out</a>
+    </div>
 
-    <!-- Create post form -->
-    <div class="card auth-card p-4 w-100 mb-3">
-      <h6 class="fw-semibold text-secondary text-uppercase mb-3" style="letter-spacing:.08em;font-size:.72rem;">New post</h6>
+    <!-- New post form -->
+    <div class="card post-form-card">
+      <h6 class="section-label">New post</h6>
       <form action="{{ url_for('posts.create') }}" method="POST">
         <div class="mb-2">
           <input type="text" class="form-control form-control-sm" name="title" placeholder="Title" required>
         </div>
         <div class="mb-3">
-          <textarea class="form-control form-control-sm" name="content" placeholder="Content" rows="4" required></textarea>
+          <textarea class="form-control form-control-sm" name="content" placeholder="Write something..." rows="5" required></textarea>
         </div>
-        <button type="submit" class="btn btn-dark btn-sm w-100 py-2">Publish</button>
+        <button type="submit" class="btn btn-publish w-100">Publish</button>
       </form>
     </div>
+  </aside>
 
-    <!-- Posts list -->
+  <!-- Feed -->
+  <main class="feed">
     {% if posts %}
       {% for post in posts %}
-      <div class="card auth-card p-3 w-100 mb-2">
-        <div class="d-flex justify-content-between align-items-start">
-          <h6 class="fw-semibold mb-1">{{ post.title }}</h6>
-          <form action="{{ url_for('posts.delete', post_id=post.id) }}" method="POST" class="ms-2">
-            <button type="submit" class="btn btn-link btn-sm text-danger p-0" style="font-size:.8rem;"
-                    onclick="return confirm('Delete this post?')">✕</button>
+      <article class="card post-card">
+        <div class="post-header">
+          <div>
+            <div class="post-title">{{ post.title }}</div>
+            <div class="post-meta">{{ post.created_at.strftime('%b %d, %Y · %H:%M') }}</div>
+          </div>
+          <form action="{{ url_for('posts.delete', post_id=post.id) }}" method="POST">
+            <button type="submit" class="btn-delete" onclick="return confirm('Delete this post?')" title="Delete">✕</button>
           </form>
         </div>
-        <p class="mb-1" style="font-size:.88rem;white-space:pre-wrap;">{{ post.content }}</p>
-        <span class="text-secondary" style="font-size:.75rem;">{{ post.created_at.strftime('%Y-%m-%d %H:%M') }}</span>
-      </div>
+        <div class="post-content">{{ post.content }}</div>
+      </article>
       {% endfor %}
     {% else %}
-      <p class="text-secondary" style="font-size:.85rem;">No posts yet.</p>
+      <div class="empty-feed">
+        <p>No posts yet. Write your first post →</p>
+      </div>
     {% endif %}
-
-    <div class="mt-3">
-      <a href="{{ url_for('auth.logout') }}" class="text-decoration-none text-secondary" style="font-size:.82rem;">Sign out</a>
-    </div>
-
-  {% else %}
-    <div class="card auth-card p-4 w-100">
-      <h6 class="text-center mb-4 fw-semibold text-secondary text-uppercase" style="letter-spacing:.08em;font-size:.72rem;">Sign in</h6>
-      <form action="{{ url_for('auth.login') }}" method="POST">
-        <div class="mb-3">
-          <input type="email" class="form-control form-control-sm" name="email" placeholder="Email" required autofocus>
-        </div>
-        <div class="mb-4">
-          <input type="password" class="form-control form-control-sm" name="password" placeholder="Password" required>
-        </div>
-        <button type="submit" class="btn btn-dark btn-sm w-100 py-2">Sign in</button>
-      </form>
-      <hr class="my-3" style="opacity:.12;">
-      <p class="text-center mb-0" style="font-size:.82rem;">
-        No account? <a href="{{ url_for('auth.register') }}" class="text-decoration-none fw-semibold">Register</a>
-      </p>
-    </div>
-  {% endif %}
+  </main>
 
 </div>
+
+{% else %}
+
+<div class="d-flex flex-column align-items-center mt-5">
+  <img class="mb-4 logo-image" src="{{ url_for('static', filename='images/dragon.png')}}" alt="" width="56" height="44">
+  <div class="card auth-card p-4 w-100">
+    <h6 class="text-center mb-4 fw-semibold text-secondary text-uppercase" style="letter-spacing:.08em;font-size:.72rem;">Sign in</h6>
+    <form action="{{ url_for('auth.login') }}" method="POST">
+      <div class="mb-3">
+        <input type="email" class="form-control form-control-sm" name="email" placeholder="Email" required autofocus>
+      </div>
+      <div class="mb-4">
+        <input type="password" class="form-control form-control-sm" name="password" placeholder="Password" required>
+      </div>
+      <button type="submit" class="btn btn-dark btn-sm w-100 py-2">Sign in</button>
+    </form>
+    <hr class="my-3" style="opacity:.12;">
+    <p class="text-center mb-0" style="font-size:.82rem;">
+      No account? <a href="{{ url_for('auth.register') }}" class="text-decoration-none fw-semibold">Register</a>
+    </p>
+  </div>
+</div>
+
+{% endif %}
 {% endblock %}
