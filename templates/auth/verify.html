@@ -1,33 +1,24 @@
 {% extends "base.html" %}
-
 {% block title %}Verify Email{% endblock %}
 
 {% block content %}
-<div class="d-flex flex-column align-items-center mt-5">
-  <div class="card auth-card p-4 w-100 text-center">
-
-    <div class="mb-3" style="font-size:2rem;">✉️</div>
-    <h6 class="fw-semibold mb-1">Check your inbox</h6>
-    <p class="text-secondary mb-4" style="font-size:.85rem;">
+<div class="zb-login-wrap">
+  <div class="zb-login-box">
+    <div style="font-size:2rem; margin-bottom:12px;">✉️</div>
+    <h5 class="zb-login-title" style="font-size:1.4rem;">Check your inbox</h5>
+    <p class="text-secondary mb-4" style="font-size:.87rem;">
       We sent a 6-digit code to <strong>{{ email }}</strong>
     </p>
-
     <form action="{{ url_for('auth.verify') }}" method="POST">
-      <div class="mb-4">
-        <input type="text" class="form-control form-control-sm text-center"
-               name="code" placeholder="000000"
-               maxlength="6" pattern="\d{6}"
-               style="letter-spacing:.35em;font-size:1.1rem;"
-               required autofocus>
-      </div>
-      <button type="submit" class="btn btn-dark btn-sm w-100 py-2">Verify</button>
+      <input type="text" class="zb-input text-center mb-4" name="code"
+             placeholder="000000" maxlength="6" pattern="\d{6}"
+             style="letter-spacing:.4em; font-size:1.2rem; font-family:monospace;"
+             required autofocus>
+      <button type="submit" class="zb-btn-publish w-100">Verify</button>
     </form>
-
-    <hr class="my-3" style="opacity:.12;">
-    <p class="text-center mb-0" style="font-size:.82rem;">
-      <a href="{{ url_for('auth.register') }}" class="text-decoration-none text-secondary">← Back to register</a>
-    </p>
-
+    <div class="zb-login-footer mt-3">
+      <a href="{{ url_for('auth.register') }}">← Back to register</a>
+    </div>
   </div>
 </div>
 {% endblock %}

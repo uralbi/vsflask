@@ -1,47 +1,32 @@
 {% extends "base.html" %}
-
 {% block title %}Register{% endblock %}
 
 {% block content %}
-<div class="d-flex flex-column align-items-center mt-5">
-  <div class="card auth-card p-4 w-100">
-
-    <h6 class="text-center mb-4 fw-semibold text-secondary text-uppercase" style="letter-spacing:.08em;font-size:.72rem;">Create account</h6>
-
+<div class="zb-login-wrap">
+  <div class="zb-login-box" style="max-width:460px;">
+    <h5 class="zb-login-title">Create account</h5>
     <form action="{{ url_for('auth.register') }}" method="POST" novalidate>
-
-      <div class="mb-3">
+      <div class="mb-3 text-start">
         <label class="form-label small text-secondary mb-1">Username</label>
-        <input type="text" class="form-control form-control-sm" name="username"
-               placeholder="e.g. john_doe" required autofocus minlength="3" maxlength="64">
+        <input type="text" class="zb-input" name="username" placeholder="e.g. john_doe" required autofocus minlength="3" maxlength="64">
       </div>
-
-      <div class="mb-3">
+      <div class="mb-3 text-start">
         <label class="form-label small text-secondary mb-1">Email</label>
-        <input type="email" class="form-control form-control-sm" name="email"
-               placeholder="you@example.com" required>
+        <input type="email" class="zb-input" name="email" placeholder="you@example.com" required>
       </div>
-
-      <div class="mb-3">
+      <div class="mb-3 text-start">
         <label class="form-label small text-secondary mb-1">Password</label>
-        <input type="password" class="form-control form-control-sm" name="password"
-               placeholder="Min. 6 characters" required minlength="6">
+        <input type="password" class="zb-input" name="password" placeholder="Min. 6 characters" required minlength="6">
       </div>
-
-      <div class="mb-4">
+      <div class="mb-4 text-start">
         <label class="form-label small text-secondary mb-1">Confirm password</label>
-        <input type="password" class="form-control form-control-sm" name="confirm_password"
-               placeholder="Repeat password" required>
+        <input type="password" class="zb-input" name="confirm_password" placeholder="Repeat password" required>
       </div>
-
-      <button type="submit" class="btn btn-dark btn-sm w-100 py-2">Create account</button>
+      <button type="submit" class="zb-btn-publish w-100">Create account</button>
     </form>
-
-    <hr class="my-3" style="opacity:.12;">
-    <p class="text-center mb-0" style="font-size:.82rem;">
-      Already have an account? <a href="{{ url_for('home') }}" class="text-decoration-none fw-semibold">Sign in</a>
-    </p>
-
+    <div class="zb-login-footer mt-3">
+      Already have an account? <a href="{{ url_for('home') }}">Sign in</a>
+    </div>
   </div>
 </div>
 {% endblock %}
