@@ -88,3 +88,30 @@ body, a, p, li, ul {
 ul {
     list-style-type: "▶ ";
 }
+
+/* Auth card */
+.auth-card {
+    max-width: 420px;
+    margin: 0 auto;
+    border: none;
+    border-radius: 12px;
+}
+.auth-card .form-control {
+    background: rgba(255,255,255,0.55);
+    border: 1px solid rgba(51,97,137,0.18);
+    border-radius: 8px;
+}
+.auth-card .form-control:focus {
+    box-shadow: 0 0 0 3px rgba(51,97,137,0.12);
+    border-color: rgba(51,97,137,0.4);
+    background: rgba(255,255,255,0.85);
+}
+.auth-card .btn-dark {
+    background: rgb(5,48,54);
+    border: none;
+    border-radius: 8px;
+    letter-spacing: .03em;
+}
+.auth-card .btn-dark:hover {
+    background: #0f6570;
+}

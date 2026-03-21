@@ -17,6 +17,18 @@
 </head>
 <body>
         {% include "comps/nav.html" %}
+        <div class="container" style="max-width:480px;">
+          {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show mt-3 py-2" role="alert">
+                  {{ message }}
+                  <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
+        </div>
         {% block content %}{% endblock %}
 <script src="{{ url_for('static', filename='js/query.js') }}" defer></script>
 </body>
