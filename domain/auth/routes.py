@@ -26,6 +26,9 @@ def send_verification_email(to_email, code):
             with smtplib.SMTP_SSL(smtp_host, smtp_port, timeout=10) as server:
                 server.login(smtp_user, smtp_pass)
                 server.sendmail(sender, [to_email], msg.as_string())
+        elif smtp_port == 25:
+            with smtplib.SMTP(smtp_host, smtp_port, timeout=10) as server:
+                server.sendmail(sender, [to_email], msg.as_string())
         else:
             with smtplib.SMTP(smtp_host, smtp_port, timeout=10) as server:
                 server.starttls()
