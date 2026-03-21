@@ -22,10 +22,15 @@ def send_verification_email(to_email, code):
     msg["To"] = to_email
 
     try:
-        with smtplib.SMTP(smtp_host, smtp_port, timeout=5) as server:
-            server.starttls()
-            server.login(smtp_user, smtp_pass)
-            server.sendmail(sender, [to_email], msg.as_string())
+        if smtp_port == 465:
+            with smtplib.SMTP_SSL(smtp_host, smtp_port, timeout=10) as server:
+                server.login(smtp_user, smtp_pass)
+                server.sendmail(sender, [to_email], msg.as_string())
+        else:
+            with smtplib.SMTP(smtp_host, smtp_port, timeout=10) as server:
+                server.starttls()
+                server.login(smtp_user, smtp_pass)
+                server.sendmail(sender, [to_email], msg.as_string())
         return True
     except Exception as e:
         print("Mail error: {}".format(e))
