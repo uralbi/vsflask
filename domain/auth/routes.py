@@ -69,12 +69,9 @@ def register():
         db.session.add(user)
         db.session.commit()
 
-        sent = send_verification_email(email, code)
         session["pending_user_id"] = user.id
-
-        if not sent:
-            flash("Could not send email. Use code: {}".format(code), "warning")
-
+        send_verification_email(email, code)
+        flash("Please check your email for activation.", "info")
         return redirect(url_for("auth.verify"))
 
     return render_template("auth/register.html")
