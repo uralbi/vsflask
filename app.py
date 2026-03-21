@@ -3,7 +3,6 @@ import os
 from config import Config
 from dotenv import load_dotenv
 from utils.ds import Utils
-from domain.db.database import check_connection
 from domain.db.models import db, User
 from flask_login import LoginManager, current_user
 import logging
@@ -51,13 +50,7 @@ app.logger.info("loading app.py")
 
 @app.route("/")
 def home():
-    try:
-        app.logger.info("Serving main page")
-        db_ok, db_error = check_connection()
-        return render_template("main.html", db_ok=db_ok, db_error=db_error)
-    except Exception as e:
-        app.logger.error("Error main page: %s", e)
-        return render_template("main.html", db_ok=False, db_error=str(e))
+    return render_template("main.html")
 
 @app.route("/query", methods=["POST"])
 def login():

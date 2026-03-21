@@ -7,12 +7,6 @@
 
   <img class="mb-2 logo-image" src="{{ url_for('static', filename='images/dragon.png')}}" alt="" width="56" height="44">
 
-  {% if db_ok %}
-  <span class="badge bg-success mb-3">DB connected</span>
-  {% else %}
-  <span class="badge bg-danger mb-3" title="{{ db_error }}">DB unavailable</span>
-  {% endif %}
-
   {% if current_user.is_authenticated %}
     <div class="card auth-card p-4 w-100 text-center">
       <p class="mb-1 text-secondary small">Signed in as</p>
