@@ -105,8 +105,12 @@ def login():
         return redirect(url_for("home"))
 
     if not user.is_active:
+        code = "{:06d}".format(random.randint(0, 999999))
+        user.verification_code = code
+        db.session.commit()
         session["pending_user_id"] = user.id
-        flash("Please verify your email first.", "warning")
+        send_verification_email(user.email, code)
+        flash("Please check your email for activation.", "info")
         return redirect(url_for("auth.verify"))
 
     login_user(user)
