@@ -1,5 +1,6 @@
 import random
 import subprocess
+import sys
 import os
 from flask import render_template, request, redirect, url_for, flash, session
 from flask_login import login_user, logout_user, login_required, current_user
@@ -7,13 +8,12 @@ from domain.auth import auth_bp
 from domain.db.models import db, User
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-PYTHON = os.path.join(BASE_DIR, "..", "myenv", "bin", "python")
 SEND_SCRIPT = os.path.join(BASE_DIR, "send_email.py")
 
 
 def send_verification_email(to_email, code):
     try:
-        result = subprocess.call([PYTHON, SEND_SCRIPT, to_email, code])
+        result = subprocess.call([sys.executable, SEND_SCRIPT, to_email, code])
         return result == 0
     except Exception as e:
         print("Mail subprocess error: {}".format(e))
