@@ -1,19 +1,18 @@
 import random
 import smtplib
-import os
 from email.mime.text import MIMEText
-from flask import render_template, request, redirect, url_for, flash, session
+from flask import render_template, request, redirect, url_for, flash, session, current_app
 from flask_login import login_user, logout_user, login_required, current_user
 from domain.auth import auth_bp
 from domain.db.models import db, User
 
 
 def send_verification_email(to_email, code):
-    smtp_host = os.getenv("MAIL_SERVER", "smtp.gmail.com")
-    smtp_port = int(os.getenv("MAIL_PORT", 587))
-    smtp_user = os.getenv("MAIL_USERNAME", "")
-    smtp_pass = os.getenv("MAIL_PASSWORD", "")
-    sender = os.getenv("MAIL_SENDER", smtp_user)
+    smtp_host = current_app.config["MAIL_SERVER"]
+    smtp_port = int(current_app.config["MAIL_PORT"])
+    smtp_user = current_app.config["MAIL_USERNAME"]
+    smtp_pass = current_app.config["MAIL_PASSWORD"]
+    sender = current_app.config["MAIL_SENDER"]
 
     body = "Your verification code: {}\n\nEnter this code to activate your account.".format(code)
     msg = MIMEText(body, "plain", "utf-8")
