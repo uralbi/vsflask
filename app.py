@@ -3,8 +3,8 @@ import os
 from config import Config
 from dotenv import load_dotenv
 from utils.ds import Utils
-from domain.db.models import db, User
-from flask_login import LoginManager, current_user
+from domain.db.models import db, User, Post
+from flask_login import LoginManager, current_user, login_required
 import logging
 from logging.handlers import RotatingFileHandler
 
@@ -24,7 +24,9 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 from domain.auth import auth_bp
+from domain.posts import posts_bp
 app.register_blueprint(auth_bp)
+app.register_blueprint(posts_bp)
 
 
 myutils = Utils()
@@ -50,7 +52,10 @@ app.logger.info("loading app.py")
 
 @app.route("/")
 def home():
-    return render_template("main.html")
+    posts = []
+    if current_user.is_authenticated:
+        posts = Post.query.filter_by(author_id=current_user.id).order_by(Post.created_at.desc()).all()
+    return render_template("main.html", posts=posts)
 
 @app.route("/query", methods=["POST"])
 def login():
