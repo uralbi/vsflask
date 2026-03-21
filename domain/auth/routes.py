@@ -1,41 +1,22 @@
 import random
-import smtplib
-from email.mime.text import MIMEText
-from flask import render_template, request, redirect, url_for, flash, session, current_app
+import subprocess
+import os
+from flask import render_template, request, redirect, url_for, flash, session
 from flask_login import login_user, logout_user, login_required, current_user
 from domain.auth import auth_bp
 from domain.db.models import db, User
 
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+PYTHON = os.path.join(BASE_DIR, "..", "myenv", "bin", "python")
+SEND_SCRIPT = os.path.join(BASE_DIR, "send_email.py")
+
 
 def send_verification_email(to_email, code):
-    smtp_host = current_app.config["MAIL_SERVER"]
-    smtp_port = int(current_app.config["MAIL_PORT"])
-    smtp_user = current_app.config["MAIL_USERNAME"]
-    smtp_pass = current_app.config["MAIL_PASSWORD"]
-    sender = current_app.config["MAIL_SENDER"]
-
-    body = "Your verification code: {}\n\nEnter this code to activate your account.".format(code)
-    msg = MIMEText(body, "plain", "utf-8")
-    msg["Subject"] = "Account Verification Code"
-    msg["From"] = sender
-    msg["To"] = to_email
-
     try:
-        if smtp_port == 465:
-            with smtplib.SMTP_SSL(smtp_host, smtp_port, timeout=10) as server:
-                server.login(smtp_user, smtp_pass)
-                server.sendmail(sender, [to_email], msg.as_string())
-        elif smtp_port == 25:
-            with smtplib.SMTP(smtp_host, smtp_port, timeout=10) as server:
-                server.sendmail(sender, [to_email], msg.as_string())
-        else:
-            with smtplib.SMTP(smtp_host, smtp_port, timeout=10) as server:
-                server.starttls()
-                server.login(smtp_user, smtp_pass)
-                server.sendmail(sender, [to_email], msg.as_string())
-        return True
+        result = subprocess.call([PYTHON, SEND_SCRIPT, to_email, code])
+        return result == 0
     except Exception as e:
-        print("Mail error: {}".format(e))
+        print("Mail subprocess error: {}".format(e))
         return False
 
 
