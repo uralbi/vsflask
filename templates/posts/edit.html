@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+{% block title %}Edit Post{% endblock %}
+
+{% block content %}
+<div class="zb-login-wrap" style="align-items:flex-start; padding-top:40px;">
+  <div class="zb-login-box" style="max-width:680px; text-align:left;">
+
+    <h5 class="zb-login-title mb-4">Edit post</h5>
+
+    <form action="{{ url_for('posts.edit', post_id=post.id) }}" method="POST" enctype="multipart/form-data" id="edit-form">
+
+      <div class="mb-3">
+        <label class="form-label small text-secondary mb-1">Title</label>
+        <input type="text" class="zb-input" name="title" value="{{ post.title }}" required>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label small text-secondary mb-1">Content</label>
+        <textarea class="zb-input zb-textarea" name="content" rows="7" required>{{ post.content }}</textarea>
+      </div>
+
+      <!-- Existing images -->
+      {% set imgs = post.images.all() %}
+      {% if imgs %}
+      <div class="mb-3">
+        <label class="form-label small text-secondary mb-1">Current images</label>
+        <div class="zb-img-preview">
+          {% for img in imgs %}
+          <div class="zb-existing-img">
+            <img src="{{ url_for('static', filename='uploads/posts/' + img.filename) }}" class="zb-thumb" alt="">
+            <label class="zb-img-remove" title="Remove">
+              <input type="checkbox" name="remove_image" value="{{ img.id }}" style="display:none;" class="remove-cb">
+              <span class="remove-x">✕</span>
+            </label>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+
+      <!-- Add new images -->
+      <div class="mb-4">
+        <label class="zb-img-label" for="img-input-edit">
+          <i class="bi bi-image"></i> <span id="img-pick-text">Add more images</span>
+        </label>
+        <input type="file" id="img-input-edit" accept="image/*" multiple style="display:none;">
+        <div id="img-preview-edit" class="zb-img-preview mt-2"></div>
+        <div id="img-hidden-inputs-edit"></div>
+      </div>
+
+      <div class="d-flex gap-2">
+        <button type="submit" class="zb-btn-publish" id="save-btn">Save changes</button>
+        <a href="{{ url_for('home') }}" class="zb-btn-cancel" style="display:inline-flex;align-items:center;padding:9px 20px;">Cancel</a>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+<script>
+// Toggle remove image
+document.querySelectorAll('.zb-existing-img').forEach(function (wrap) {
+  var cb = wrap.querySelector('.remove-cb');
+  var x = wrap.querySelector('.remove-x');
+  wrap.querySelector('.zb-img-remove').addEventListener('click', function (e) {
+    e.preventDefault();
+    cb.checked = !cb.checked;
+    wrap.style.opacity = cb.checked ? '0.35' : '1';
+    x.style.color = cb.checked ? '#e74c3c' : '';
+  });
+});
+
+// Image picker + WebP optimizer
+(function () {
+  var input = document.getElementById('img-input-edit');
+  var preview = document.getElementById('img-preview-edit');
+  var hiddenInputs = document.getElementById('img-hidden-inputs-edit');
+  var pickText = document.getElementById('img-pick-text');
+  var MAX_W = 1200;
+  var processedFiles = [];
+
+  document.querySelector('.zb-img-label').addEventListener('click', function () { input.click(); });
+
+  input.addEventListener('change', function () {
+    var files = Array.prototype.slice.call(input.files);
+    if (!files.length) return;
+    pickText.textContent = 'Processing...';
+    processedFiles = []; preview.innerHTML = ''; hiddenInputs.innerHTML = '';
+    var done = 0;
+    files.forEach(function (file, i) {
+      var reader = new FileReader();
+      reader.onload = function (e) {
+        var img = new window.Image();
+        img.onload = function () {
+          var w = img.width, h = img.height;
+          if (w > MAX_W) { h = Math.round(h * MAX_W / w); w = MAX_W; }
+          var canvas = document.createElement('canvas');
+          canvas.width = w; canvas.height = h;
+          canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+          canvas.toBlob(function (blob) {
+            var thumb = document.createElement('img');
+            thumb.src = URL.createObjectURL(blob);
+            thumb.className = 'zb-thumb';
+            preview.appendChild(thumb);
+            processedFiles[i] = new File([blob], 'image_' + i + '.webp', { type: 'image/webp' });
+            done++;
+            if (done === files.length) {
+              pickText.textContent = done + ' image' + (done > 1 ? 's' : '') + ' selected';
+              var dt = new DataTransfer();
+              processedFiles.forEach(function (f) { if (f) dt.items.add(f); });
+              var ni = document.createElement('input');
+              ni.type = 'file'; ni.name = 'images'; ni.multiple = true; ni.style.display = 'none';
+              ni.files = dt.files;
+              hiddenInputs.appendChild(ni);
+            }
+          }, 'image/webp', 0.82);
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+  });
+
+  document.getElementById('edit-form').addEventListener('submit', function () {
+    input.disabled = true;
+    document.getElementById('save-btn').textContent = 'Saving...';
+    document.getElementById('save-btn').disabled = true;
+  });
+})();
+</script>
+{% endblock %}

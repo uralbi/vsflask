@@ -306,6 +306,87 @@ img { max-width: 100%; display: block; }
   flex: 1;
 }
 
+/* ── Post action buttons (edit / delete) ──────── */
+.zb-post-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.zb-action-btn {
+  background: none;
+  border: none;
+  color: #bbb;
+  font-size: .82rem;
+  padding: 2px 5px;
+  border-radius: 4px;
+  cursor: pointer;
+  line-height: 1;
+  transition: color .15s, background .15s;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+}
+.zb-action-btn:hover { color: var(--accent); background: rgba(70,83,103,0.08); }
+.zb-action-del:hover { color: #e74c3c !important; background: rgba(231,76,60,0.08) !important; }
+
+/* ── Delete modal ─────────────────────────────── */
+.zb-modal {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 8px 40px rgba(0,0,0,.18);
+}
+.zb-modal-icon {
+  font-size: 2rem;
+  color: #e74c3c;
+}
+.zb-modal-title {
+  font-family: var(--font-serif);
+  font-size: 1.3rem;
+  font-weight: 500;
+  color: var(--text);
+  margin: 0;
+}
+.zb-modal-text {
+  font-size: .85rem;
+  color: var(--text-muted);
+  margin: 6px 0 0;
+}
+.zb-btn-danger {
+  background: #e74c3c;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: .85rem;
+  font-weight: 500;
+  padding: 9px 24px;
+  cursor: pointer;
+  transition: background .2s;
+}
+.zb-btn-danger:hover { background: #c0392b; }
+
+/* ── Existing image remove (edit page) ────────── */
+.zb-existing-img {
+  position: relative;
+  display: inline-block;
+  transition: opacity .2s;
+}
+.zb-img-remove {
+  position: absolute;
+  top: -5px; right: -5px;
+  cursor: pointer;
+}
+.remove-x {
+  background: #fff;
+  border: 1.5px solid #ddd;
+  border-radius: 50%;
+  width: 18px; height: 18px;
+  font-size: .6rem;
+  display: flex; align-items: center; justify-content: center;
+  color: #aaa;
+  transition: color .15s, border-color .15s;
+  box-shadow: 0 1px 3px rgba(0,0,0,.1);
+}
+
 /* ── Empty state ──────────────────────────────── */
 .zb-empty {
   text-align: center;

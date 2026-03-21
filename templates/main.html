@@ -69,9 +69,10 @@
             <span>{{ first.author.username }}</span>
             <span class="zb-dot">·</span>
             <span>{{ first.created_at.strftime('%b %d, %Y') }}</span>
-            <form action="{{ url_for('posts.delete', post_id=first.id) }}" method="POST" class="d-inline ms-2">
-              <button class="zb-del-btn" onclick="return confirm('Delete?')" title="Delete">✕</button>
-            </form>
+            <div class="zb-post-actions ms-2">
+              <a href="{{ url_for('posts.edit', post_id=first.id) }}" class="zb-action-btn" title="Edit"><i class="bi bi-pencil"></i></a>
+              <button class="zb-action-btn zb-action-del" data-post-id="{{ first.id }}" title="Delete"><i class="bi bi-trash"></i></button>
+            </div>
           </div>
           <h2 class="zb-post-title zb-title-lg">{{ first.title }}</h2>
           <p class="zb-post-excerpt">{{ first.content[:280] }}{% if first.content|length > 280 %}…{% endif %}</p>
@@ -93,9 +94,10 @@
             <div class="zb-card-body">
               <div class="zb-meta">
                 <span>{{ post.created_at.strftime('%b %d, %Y') }}</span>
-                <form action="{{ url_for('posts.delete', post_id=post.id) }}" method="POST" class="d-inline ms-2">
-                  <button class="zb-del-btn" onclick="return confirm('Delete?')" title="Delete">✕</button>
-                </form>
+                <div class="zb-post-actions ms-2">
+                  <a href="{{ url_for('posts.edit', post_id=post.id) }}" class="zb-action-btn" title="Edit"><i class="bi bi-pencil"></i></a>
+                  <button class="zb-action-btn zb-action-del" data-post-id="{{ post.id }}" title="Delete"><i class="bi bi-trash"></i></button>
+                </div>
               </div>
               <h2 class="zb-post-title zb-title-sm">{{ post.title }}</h2>
               <p class="zb-post-excerpt zb-excerpt-sm">{{ post.content[:140] }}{% if post.content|length > 140 %}…{% endif %}</p>
@@ -112,11 +114,39 @@
 
     </div>
   </section>
+
+  <!-- ── Delete confirmation modal ── -->
+  <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width:380px;">
+      <div class="modal-content zb-modal">
+        <div class="modal-body text-center py-4 px-4">
+          <div class="zb-modal-icon mb-3"><i class="bi bi-trash3"></i></div>
+          <h5 class="zb-modal-title">Delete post?</h5>
+          <p class="zb-modal-text">This action cannot be undone.</p>
+          <div class="d-flex gap-2 justify-content-center mt-4">
+            <button class="zb-btn-cancel px-4" data-bs-dismiss="modal">Cancel</button>
+            <form id="delete-form" method="POST">
+              <button type="submit" class="zb-btn-danger">Delete</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
 <script>
 AOS.init({ duration: 600, once: true });
+
+// Delete modal
+document.querySelectorAll('.zb-action-del').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    var postId = this.getAttribute('data-post-id');
+    document.getElementById('delete-form').action = '/posts/' + postId + '/delete';
+    new bootstrap.Modal(document.getElementById('deleteModal')).show();
+  });
+});
 
 // Toggle new post form
 document.getElementById('toggle-form-btn').addEventListener('click', function () {
