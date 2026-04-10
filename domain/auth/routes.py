@@ -1,4 +1,5 @@
 import random
+import string
 import subprocess
 import sys
 import os
@@ -9,6 +10,21 @@ from domain.db.models import db, User
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 SEND_SCRIPT = os.path.join(BASE_DIR, "send_email.py")
+SEND_RESET_SCRIPT = os.path.join(BASE_DIR, "send_reset_email.py")
+
+
+def send_reset_password_email(to_email, new_password):
+    try:
+        result = subprocess.call([sys.executable, SEND_RESET_SCRIPT, to_email, new_password])
+        return result == 0
+    except Exception as e:
+        print("Mail subprocess error: {}".format(e))
+        return False
+
+
+def generate_password(length=10):
+    chars = string.ascii_letters + string.digits
+    return "".join(random.choice(chars) for _ in range(length))
 
 
 def send_verification_email(to_email, code):
@@ -122,3 +138,25 @@ def login():
 def logout():
     logout_user()
     return redirect(url_for("home"))
+
+
+@auth_bp.route("/forgot-password", methods=["GET", "POST"])
+def forgot_password():
+    if current_user.is_authenticated:
+        return redirect(url_for("home"))
+
+    if request.method == "POST":
+        email = request.form.get("email", "").strip().lower()
+        user = User.query.filter_by(email=email).first()
+
+        if user and user.is_active:
+            new_password = generate_password()
+            user.set_password(new_password)
+            db.session.commit()
+            send_reset_password_email(email, new_password)
+
+        # Always show the same message to avoid email enumeration
+        flash("If that email is registered, a new password has been sent.", "info")
+        return redirect(url_for("auth.forgot_password"))
+
+    return render_template("auth/forgot_password.html")

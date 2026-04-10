@@ -233,6 +233,9 @@ document.getElementById('cancel-form-btn').addEventListener('click', function ()
       <button type="submit" class="zb-btn-publish w-100">Sign in</button>
     </form>
     <div class="zb-login-footer">
+      <a href="{{ url_for('auth.forgot_password') }}">Forgot password?</a>
+    </div>
+    <div class="zb-login-footer">
       No account? <a href="{{ url_for('auth.register') }}">Register</a>
     </div>
   </div>
